@@ -1,5 +1,5 @@
 import axios from "axios";
-const basicUrl = 'http://localhost:4001/persons';
+const basicUrl = '/api/persons';
 
 const getAll = () => {
 
