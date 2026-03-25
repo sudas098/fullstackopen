@@ -42,34 +42,34 @@ app.get('/api/persons/:id', (req, res, next) => {
       }
     })
     .catch(error => {
-      next(error);
+      next(error)
     })
 })
 
-app.put('/api/persons/:id', (req, res) => {
+app.put('/api/persons/:id', (req, res, next) => {
 
-    const body = req.body;
+  const body = req.body
 
-     Person.findById(req.params.id).then(person => {
+  Person.findById(req.params.id).then(person => {
 
-         if(!person) {
-           res.status(400).end()
-         } else {
+    if(!person) {
+      res.status(400).end()
+    } else {
 
-            person.name = body.name
-            person.number = body.number
+      person.name = body.name
+      person.number = body.number
 
-            person.save().then(updatedPerson => {
-              res.json(updatedPerson)
-            })
-         }
-     }).catch((err) => next(err))
+      person.save().then(updatedPerson => {
+        res.json(updatedPerson)
+      })
+    }
+  }).catch((err) => next(err))
 })
 
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end()
     })
     .catch(error => next(error))
@@ -83,17 +83,17 @@ app.post('/api/persons', (req, res, next) => {
     return res.status(400).json({ error: 'name or number missing' })
   }
 
-  
+
   Person.findOne({ name: body.name })
     .then(existingPerson => {
       if (existingPerson) {
-        
-        return res.status(400).json({ 
-          error: 'name must be unique' 
+
+        return res.status(400).json({
+          error: 'name must be unique'
         })
       }
 
-      
+
       const person = new Person({
         name: body.name,
         number: body.number,
@@ -102,36 +102,36 @@ app.post('/api/persons', (req, res, next) => {
       return person.save()
     })
     .then(savedPerson => {
-      
+
       if (savedPerson) {
         res.json(savedPerson)
       }
     })
     .catch(error => {
-      next(error);
+      next(error)
     })
 })
 
-const errorHandler = ( err, req, res, next) => {
+const errorHandler = ( err, res, next) => {
 
-  console.log(err.message);
+  console.log(err.message)
 
   if (err.name === 'CastError') {
 
-    res.status(400).send({error: 'malformatted id'})
-  } 
-  
-  if ( err.name === 'ValidationError') {
-
-    const firstErrorMessage = Object.values(err.errors)[0].message;
-    return res.status(400).json({ error: firstErrorMessage });
+    res.status(400).send({ error: 'malformatted id' })
   }
 
-  next(err);
-  
+  if ( err.name === 'ValidationError') {
+
+    const firstErrorMessage = Object.values(err.errors)[0].message
+    return res.status(400).json({ error: firstErrorMessage })
+  }
+
+  next(err)
+
 }
 
-app.use(errorHandler);
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
