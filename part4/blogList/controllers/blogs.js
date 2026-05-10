@@ -77,24 +77,28 @@ blogsRouter.delete('/:id' , async (req, res, next) => {
 
 // PUT (update)
 blogsRouter.put('/:id', async (req, res, next) => {
-  try {
-    const body = req.body;
+  const body = req.body
 
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      {
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes,
-      },
-      { new: true, runValidators: true, context: 'query' }
-    );
-
-    res.json(updatedBlog);
-  } catch (error) {
-    next(error);
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: body.user // Ensure the user ID is kept in the document
   }
-});
+
+  try {
+    // 1. Perform the update
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true })
+    
+    // 2. Explicitly populate the user field on the resulting document
+    await updatedBlog.populate('user', { username: 1, name: 1 })
+
+    // 3. Send the fully populated blog back to React
+    res.json(updatedBlog)
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = blogsRouter;

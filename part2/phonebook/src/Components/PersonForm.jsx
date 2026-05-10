@@ -1,5 +1,5 @@
 import newService from '../services/persons';
-const PersonForm = ({ persons, setPersons, newName, setNewName, number, setNumber, setMessage  }) => {
+const PersonForm = ({ persons, setPersons, newName, setNewName, number, setNumber, setMessage, setErrorMessage  }) => {
 
     const handleInput = (e) => {
 
@@ -37,6 +37,7 @@ const PersonForm = ({ persons, setPersons, newName, setNewName, number, setNumbe
                         .create(newPerson)
                         .then(returnPerson => {
 
+                         
                             console.log(returnPerson);
                             setPersons(persons.concat(returnPerson));
                             setNewName('');
@@ -45,7 +46,18 @@ const PersonForm = ({ persons, setPersons, newName, setNewName, number, setNumbe
                             setTimeout(() => {
                                setMessage(null)
                             },2000);
-                        })
+                        
+                            
+                        }).catch((err) => {
+                if (err.response && err.response.data) {
+                    setErrorMessage(err.response.data.error); 
+                } else {
+                    setErrorMessage(err.message);
+                }
+                setTimeout(() => setErrorMessage(null), 5000);
+                })
+                                            
+
                 
                   }
         

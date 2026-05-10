@@ -3,6 +3,7 @@ const assert = require('node:assert')
 const supertest = require('supertest')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const connectDb = require('../utils/db');
 
 const app = require('../app')
 const api = supertest(app)

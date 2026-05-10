@@ -14,6 +14,7 @@ const App = () => {
    const [ searchedTerm, setSearchedTerm ] = useState('');
    const [ message, setMessage ] = useState(null);
    const [ removeMessage, setRemoveMessage ] = useState(null);
+   const [ errorMessage, setErrorMessage ] = useState(null);
 
    
    useEffect(() => {
@@ -39,7 +40,7 @@ const App = () => {
     <>
        <h2>Phonebook</h2>
 
-       <Notification message = { message } removeMessage = { removeMessage } />
+       <Notification message = { message } removeMessage = { removeMessage } errorMessage={errorMessage} />
       
        <Filter searchedTerm = { searchedTerm } setSearchedTerm = { setSearchedTerm }/>
        
@@ -48,13 +49,14 @@ const App = () => {
         <PersonForm persons = { persons } setPersons = { setPersons }
                     newName = { newName } setNewName = { setNewName }
                     number = { number } setNumber = { setNumber }
-                    setMessage = { setMessage }
+                    setMessage = { setMessage } setErrorMessage={setErrorMessage}
                       />
         
         <h3>Numbers</h3>
         
         <Persons  persons = { persons } searchedTerm = { searchedTerm } setPersons = { setPersons }
-         setRemoveMessage = { setRemoveMessage } />
+         setRemoveMessage = { setRemoveMessage } newName={newName} number={number}
+          setNewName={setNewName} setNumber={setNumber}  />
     </>
    )
 }

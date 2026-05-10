@@ -1,4 +1,4 @@
-const Notification = ({ message, removeMessage }) => {
+const Notification = ({ message, removeMessage, errorMessage }) => {
   if (message !== null) {
     return <div className="notification">{message}</div>
   }
@@ -7,7 +7,15 @@ const Notification = ({ message, removeMessage }) => {
     return <div className="remove-notification">{removeMessage}</div>
   }
 
-  return null
+  if ( errorMessage !== null ) {
+
+  return <div className="error-message"> {errorMessage} </div>
 }
+
+  return null
+
+}
+
+
 
 export default Notification;
