@@ -1,0 +1,23 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client",
+    "start": "NODE_ENV=production npm start --prefix server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "prettier": "^3.9.5"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.101.2",
+    "zustand": "^5.0.14"
+  }
+}
